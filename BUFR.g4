@@ -59,6 +59,10 @@ replication_descriptor:
 	| delayed_replication_expr;
 
 fixed_replication_descriptor:
+F_REP SPACE x_all SPACE y_without_0
+{System.out.println("Fixed Replicaton: Number of element to replicate: " + $x_all.text);}
+;
+/* 
 	F_REP SPACE (X_PARTS | X_031) SPACE (
 		Y_PARTS
 		| Y_001
@@ -68,13 +72,17 @@ fixed_replication_descriptor:
 		| Y_021
 		| Y_031
 	);
+*/
 //{System.out.println("Replication factor: " + $Y_021ULL_Z.text);};
 
 delayed_replication_expr:
 	delayed_replication_descriptor SPACE delayed_descriptor_replication_factor;
 
 delayed_replication_descriptor:
-	F_REP SPACE (X_PARTS | X_031) SPACE Y_000;
+	//F_REP SPACE (X_PARTS | X_031) SPACE Y_000;
+	F_REP SPACE x_all SPACE Y_000
+{System.out.println("Delayed replication: Number of element to replicate: " + $x_all.text);}
+	;
 
 // (('000') | ('001') |('002') |('011') | ('012') | ('021')| ('031')) 
 /*
@@ -94,6 +102,20 @@ delayed_descriptor_replication_factor:
 associated_field_significance: F_EL SPACE X_031 SPACE Y_021;
 
 data_present_indicator: F_EL SPACE X_031 SPACE Y_031;
+
+/* x_all als parser rule */
+x_all : X_031 | X_PARTS;
+
+y_all : y_without_0 | Y_000;
+
+y_without_0: 	Y_PARTS
+		| Y_001
+		| Y_002
+		| Y_011
+		| Y_012
+		| Y_021
+		| Y_031
+		;
 
 F_EL: ('0');
 F_REP: ('1');
