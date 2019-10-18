@@ -14,6 +14,8 @@ expr: (
 	);
 
 element_descriptor:
+	F_EL SPACE X_PARTS SPACE y_all | data_description_operator_qualifier;
+/* 
 	F_EL SPACE (X_PARTS | X_031) SPACE (
 		Y_PARTS
 		| Y_000
@@ -25,12 +27,14 @@ element_descriptor:
 		| Y_031
 	)
 	| data_present_indicator;
-
+*/
 operator_descriptor_expr:
 	operator_descriptor
 	| (operator_descriptor SPACE associated_field_significance);
 
 operator_descriptor:
+	F_OP SPACE x_all SPACE y_all; 
+/* 
 	F_OP SPACE (X_PARTS | X_031) SPACE (
 		Y_PARTS
 		| Y_000
@@ -41,8 +45,10 @@ operator_descriptor:
 		| Y_021
 		| Y_031
 	);
-
+*/
 sequence_descriptor:
+	F_SEQ SPACE x_all SPACE y_all;
+/* 
 	F_SEQ SPACE (X_PARTS | X_031) SPACE (
 		Y_PARTS
 		| Y_000
@@ -53,6 +59,7 @@ sequence_descriptor:
 		| Y_021
 		| Y_031
 	);
+*/
 
 replication_descriptor:
 	fixed_replication_descriptor
@@ -85,10 +92,10 @@ delayed_replication_descriptor:
 	;
 
 // (('000') | ('001') |('002') |('011') | ('012') | ('021')| ('031')) 
-/*
+
  data_description_operator_qualifier: delayed_descriptor_replication_factor |
  associated_field_significance | data_present_indicator;
- */
+
 
 delayed_descriptor_replication_factor:
 	F_EL SPACE X_031 SPACE (
