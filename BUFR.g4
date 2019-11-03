@@ -23,7 +23,7 @@ expr: (
 /* 94.5.3.2 If F = 0, the descriptor shall be called an “element descriptor”.
  An element descriptor shall define a single data item by reference to Table B. */
 element_descriptor:
-	F_EL SPACE X_PARTS SPACE y_all | data_description_operator_qualifier;
+	F_EL SPACE (X_PARTS | X_036) SPACE y_all | data_description_operator_qualifier;
 
 
 /* 94.5.5.1 If F = 2, the descriptor shall be called an “operator descriptor”. An operator descriptor shall
@@ -33,11 +33,28 @@ Notes:
 (2) Y contains a value to be used as an operand in completing the defined operation.  */
 operator_descriptor_expr:
 	operator_descriptor
-	| (operator_descriptor SPACE associated_field_significance);
+	| (operator_descriptor SPACE associated_field_significance)
+	| operator_236000_expr
+	;
 
 operator_descriptor:
-	F_OP SPACE x_all SPACE y_all; 
-	
+	F_OP SPACE (X_PARTS | X_031) SPACE y_all; 
+
+
+/* 94.5.5.3 A data present bit-map shall be defined as a set of N one bit values corresponding to N data
+entities described by N element descriptors (including element descriptors for delayed
+replication, if present); the data description of a data present bit-map is comprised of a
+replication operator followed by the element descriptor for the data present indicator.  */
+// 236000 101005 031031
+// 236000 101000 031001 031031
+operator_236000_expr:
+	operator_236000 SPACE replication_descriptor SPACE data_present_indicator
+	;
+
+operator_236000:
+	F_OP SPACE X_036 SPACE Y_000
+;
+
 /* 94.5.6 Indirect reference to descriptors
 94.5.6.1 If F = 3, the descriptor shall be called a “sequence descriptor”. A sequence descriptor shall
 define a list of element descriptors, replication descriptors, operator descriptors and/or
@@ -103,7 +120,7 @@ associated_field_significance: F_EL SPACE X_031 SPACE Y_021;
 data_present_indicator: F_EL SPACE X_031 SPACE Y_031;
 
 /* x_all als parser rule */
-x_all : X_031 | X_PARTS;
+x_all : X_031 | X_PARTS | X_036;
 
 y_all : y_without_0 | Y_000;
 
@@ -145,9 +162,12 @@ SPACE: ' ';
 
 X_031: '31';
 
+X_036: '36';
+
 X_PARTS: ('0' .. '2') ('0' .. '9')
 	| '30'
-	| ('3') ('2' .. '9')
+	| ('3') ('1' .. '5')
+	| ('3') ('7' .. '9')
 	| ('4' .. '5') ('0' .. '9')
 	| ('6') ('0' .. '3');
 
