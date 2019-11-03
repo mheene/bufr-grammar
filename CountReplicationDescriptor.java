@@ -78,14 +78,30 @@ public class CountReplicationDescriptor extends BUFRBaseListener {
         this.processDescriptor();
     }
 
+    /*
     @Override
+    
     public void enterOperator_descriptor_expr(BUFRParser.Operator_descriptor_exprContext ctx) {
         System.out.println("Operator Descriptor Expr Ctx: " + ctx.getText());
         counterDescriptors++;
         // @ToDo: konnte mehr als einer sein
         this.processDescriptor();
     }
+    */
+    @Override 
+    public void enterOperator_descriptor(BUFRParser.Operator_descriptorContext ctx) {
+        System.out.println("Operator Descriptor Ctx: " + ctx.getText());
+        counterDescriptors++;
+        this.processDescriptor();
+     }
 
+    @Override 
+    public void enterAssociated_field_significance(BUFRParser.Associated_field_significanceContext ctx) {
+        System.out.println("Associated Field Significance Expr Ctx: " + ctx.getText());
+        counterDescriptors++;
+        this.processDescriptor();
+     }
+    
     @Override
     public void enterSequence_descriptor(BUFRParser.Sequence_descriptorContext ctx) {
         System.out.println("Sequence Descriptor Ctx: " + ctx.getText());
