@@ -3,7 +3,13 @@
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class CountReplicationDescriptor extends BUFRBaseListener {
+
+    private static Logger log =  Logger.getLogger(CountReplicationDescriptor.class.getName());
+
     private int counterDescriptors = 0;
     private int numberOfFixedReplications = 0;
     private int numberOfDelayedReplications = 0;
@@ -90,7 +96,7 @@ public class CountReplicationDescriptor extends BUFRBaseListener {
     */
     @Override 
     public void enterOperator_descriptor(BUFRParser.Operator_descriptorContext ctx) {
-        System.out.println("Operator Descriptor Ctx: " + ctx.getText());
+        log.severe("Operator Descriptor Ctx: " + ctx.getText());
         counterDescriptors++;
         this.processDescriptor();
      }
