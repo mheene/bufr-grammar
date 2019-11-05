@@ -98,7 +98,7 @@ public class CountReplicationDescriptor extends BUFRBaseListener {
      */
     @Override
     public void enterOperator_descriptor(BUFRParser.Operator_descriptorContext ctx) {
-        log.severe("Operator Descriptor Ctx: " + ctx.getText());
+        log.finest("Operator Descriptor Ctx: " + ctx.getText());
         counterDescriptors++;
         this.processDescriptor();
     }
