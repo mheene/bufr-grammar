@@ -23,7 +23,7 @@ expr: (
 /* 94.5.3.2 If F = 0, the descriptor shall be called an “element descriptor”.
  An element descriptor shall define a single data item by reference to Table B. */
 element_descriptor:
-	F_EL SPACE (X_PARTS | X_036) SPACE y_all | data_description_operator_qualifier;
+	F_EL SPACE (X_PARTS | X_036 | X_001) SPACE y_all | data_description_operator_qualifier;
 
 
 /* 94.5.5.1 If F = 2, the descriptor shall be called an “operator descriptor”. An operator descriptor shall
@@ -38,7 +38,7 @@ operator_descriptor_expr:
 	;
 
 operator_descriptor:
-	F_OP SPACE (X_PARTS | X_031) SPACE y_all; 
+	F_OP SPACE (X_PARTS | X_031 | X_001) SPACE y_all; 
 
 
 /* 94.5.5.3 A data present bit-map shall be defined as a set of N one bit values corresponding to N data
@@ -120,7 +120,7 @@ associated_field_significance: F_EL SPACE X_031 SPACE Y_021;
 data_present_indicator: F_EL SPACE X_031 SPACE Y_031;
 
 /* x_all als parser rule */
-x_all : X_031 | X_PARTS | X_036;
+x_all : X_031 | X_PARTS | X_036 | X_001;
 
 y_all : y_without_0 | Y_000;
 
@@ -160,11 +160,15 @@ Y_PARTS: ('0') ('0') ('3' .. '9')
 
 SPACE: ' ';
 
+X_001: '01';
+
 X_031: '31';
 
 X_036: '36';
 
-X_PARTS: ('0' .. '2') ('0' .. '9')
+X_PARTS: 
+	'00' | ('0')('2' .. '9')
+	| ('1' .. '2') ('0' .. '9')
 	| '30'
 	| ('3') ('1' .. '5')
 	| ('3') ('7' .. '9')
