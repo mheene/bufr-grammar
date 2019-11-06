@@ -144,6 +144,7 @@ public class CountReplicationDescriptor extends BUFRBaseListener {
         log.finest("Replication Ctx: " + ctx.getText());
     }
 
+    /*
     @Override
     public void enterDelayed_replication_descriptor(BUFRParser.Delayed_replication_descriptorContext ctx) {
         String delayedReplication = ctx.getText();
@@ -154,7 +155,26 @@ public class CountReplicationDescriptor extends BUFRBaseListener {
         numberOfDelayedReplications = Integer.parseInt(parts[1]);
         addDelayedReplicationDescriptorToList(delayedReplication, numberOfDelayedReplications);
     }
+*/
+    @Override public void enterDelayed_replication_expr_part(BUFRParser.Delayed_replication_expr_partContext ctx) {
+        String delayedReplication = ctx.getText();
+        log.finest("Delayed Replication Ctx: " + delayedReplication);
+        String[] parts = delayedReplication.split(" ");
+        // log.finest("" + parts.length + " x:" + parts[1]);
+        log.finest("Replications: " + Integer.parseInt(parts[1]));
+        numberOfDelayedReplications = Integer.parseInt(parts[1]);
+        addDelayedReplicationDescriptorToList(delayedReplication, numberOfDelayedReplications);
+     }
 
+    @Override public void enterDelayed_replication_expr_one_element(BUFRParser.Delayed_replication_expr_one_elementContext ctx) { 
+        String delayedReplication = ctx.getText();
+        log.finest("Delayed Replication Ctx: " + delayedReplication);
+        String[] parts = delayedReplication.split(" ");
+        // log.finest("" + parts.length + " x:" + parts[1]);
+        log.finest("Replications: " + Integer.parseInt(parts[1]));
+        numberOfDelayedReplications = Integer.parseInt(parts[1]);
+        addDelayedReplicationDescriptorToList(delayedReplication, numberOfDelayedReplications);
+    }
     @Override
     public void exitTemplate(BUFRParser.TemplateContext ctx) {
         log.finest("Number of FixedReplications: " + numberOfFixedReplications);

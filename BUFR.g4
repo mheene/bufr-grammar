@@ -23,7 +23,7 @@ expr: (
 /* 94.5.3.2 If F = 0, the descriptor shall be called an “element descriptor”.
  An element descriptor shall define a single data item by reference to Table B. */
 element_descriptor:
-	F_EL SPACE (X_PARTS | X_036) SPACE y_all | data_description_operator_qualifier;
+	F_EL SPACE (X_PARTS | X_036 | X_001) SPACE y_all | data_description_operator_qualifier;
 
 
 /* 94.5.5.1 If F = 2, the descriptor shall be called an “operator descriptor”. An operator descriptor shall
@@ -38,7 +38,7 @@ operator_descriptor_expr:
 	;
 
 operator_descriptor:
-	F_OP SPACE (X_PARTS | X_031) SPACE y_all; 
+	F_OP SPACE (X_PARTS | X_031 | X_001) SPACE y_all; 
 
 
 /* 94.5.5.3 A data present bit-map shall be defined as a set of N one bit values corresponding to N data
@@ -48,7 +48,7 @@ replication operator followed by the element descriptor for the data present ind
 // 236000 101005 031031
 // 236000 101000 031001 031031
 operator_236000_expr:
-	operator_236000 SPACE replication_descriptor SPACE data_present_indicator
+	operator_236000 SPACE (fixed_replication_descriptor_one_element | delayed_replication_expr_one_element) SPACE data_present_indicator
 	;
 
 operator_236000:
@@ -88,19 +88,41 @@ replication_descriptor:
 
 
 fixed_replication_descriptor:
-F_REP SPACE x_all SPACE y_without_0
+	fixed_replication_descriptor_part | fixed_replication_descriptor_one_element
+;
+
+
+delayed_replication_expr:
+ delayed_replication_expr_part | delayed_replication_expr_one_element
+;
+
+fixed_replication_descriptor_part:
+F_REP SPACE (X_031 | X_036 | X_PARTS) SPACE y_without_0
 // {System.out.println("Fixed Replicaton: Number of element to replicate: " + $x_all.text);}
 ;
 
-delayed_replication_expr:
-	delayed_replication_descriptor SPACE delayed_descriptor_replication_factor;
+fixed_replication_descriptor_one_element:
+F_REP SPACE X_001 SPACE y_without_0
+;
+
+delayed_replication_expr_part:
+	delayed_replication_descriptor_part SPACE delayed_descriptor_replication_factor;
+
+delayed_replication_expr_one_element:
+	delayed_replication_descriptor_one_element SPACE delayed_descriptor_replication_factor;
 
 delayed_replication_descriptor:
-	F_REP SPACE x_all SPACE Y_000
-//{System.out.println("Delayed replication: Number of element to replicate: " + $x_all.text);}
+	delayed_replication_descriptor_part | delayed_replication_descriptor_one_element 
+;
+
+delayed_replication_descriptor_part:
+	F_REP SPACE (X_031 | X_036 | X_PARTS) SPACE Y_000
+
 	;
 
-
+delayed_replication_descriptor_one_element:
+	F_REP SPACE X_001 SPACE Y_000
+	;
 
  data_description_operator_qualifier: delayed_descriptor_replication_factor |
  associated_field_significance | data_present_indicator;
@@ -120,7 +142,7 @@ associated_field_significance: F_EL SPACE X_031 SPACE Y_021;
 data_present_indicator: F_EL SPACE X_031 SPACE Y_031;
 
 /* x_all als parser rule */
-x_all : X_031 | X_PARTS | X_036;
+x_all : X_031 | X_PARTS | X_036 | X_001;
 
 y_all : y_without_0 | Y_000;
 
@@ -160,11 +182,15 @@ Y_PARTS: ('0') ('0') ('3' .. '9')
 
 SPACE: ' ';
 
+X_001: '01';
+
 X_031: '31';
 
 X_036: '36';
 
-X_PARTS: ('0' .. '2') ('0' .. '9')
+X_PARTS: 
+	'00' | ('0')('2' .. '9')
+	| ('1' .. '2') ('0' .. '9')
 	| '30'
 	| ('3') ('1' .. '5')
 	| ('3') ('7' .. '9')
