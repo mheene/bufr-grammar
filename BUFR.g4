@@ -48,7 +48,7 @@ replication operator followed by the element descriptor for the data present ind
 // 236000 101005 031031
 // 236000 101000 031001 031031
 operator_236000_expr:
-	operator_236000 SPACE (fixed_replication_descriptor_one_element | delayed_replication_expr) SPACE data_present_indicator
+	operator_236000 SPACE (fixed_replication_descriptor_one_element | delayed_replication_expr_one_element) SPACE data_present_indicator
 	;
 
 operator_236000:
@@ -91,6 +91,11 @@ fixed_replication_descriptor:
 	fixed_replication_descriptor_part | fixed_replication_descriptor_one_element
 ;
 
+
+delayed_replication_expr:
+ delayed_replication_expr_part | delayed_replication_expr_one_element
+;
+
 fixed_replication_descriptor_part:
 F_REP SPACE (X_031 | X_036 | X_PARTS) SPACE y_without_0
 // {System.out.println("Fixed Replicaton: Number of element to replicate: " + $x_all.text);}
@@ -99,15 +104,25 @@ F_REP SPACE (X_031 | X_036 | X_PARTS) SPACE y_without_0
 fixed_replication_descriptor_one_element:
 F_REP SPACE X_001 SPACE y_without_0
 ;
-delayed_replication_expr:
-	delayed_replication_descriptor SPACE delayed_descriptor_replication_factor;
+
+delayed_replication_expr_part:
+	delayed_replication_descriptor_part SPACE delayed_descriptor_replication_factor;
+
+delayed_replication_expr_one_element:
+	delayed_replication_descriptor_one_element SPACE delayed_descriptor_replication_factor;
 
 delayed_replication_descriptor:
-	F_REP SPACE x_all SPACE Y_000
-//{System.out.println("Delayed replication: Number of element to replicate: " + $x_all.text);}
+	delayed_replication_descriptor_part | delayed_replication_descriptor_one_element 
+;
+
+delayed_replication_descriptor_part:
+	F_REP SPACE (X_031 | X_036 | X_PARTS) SPACE Y_000
+
 	;
 
-
+delayed_replication_descriptor_one_element:
+	F_REP SPACE X_001 SPACE Y_000
+	;
 
  data_description_operator_qualifier: delayed_descriptor_replication_factor |
  associated_field_significance | data_present_indicator;
