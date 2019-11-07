@@ -70,6 +70,7 @@ public class CountReplicationDescriptor extends BUFRBaseListener {
         log.finest("Replications: " + Integer.parseInt(parts[1]));
         numberOfFixedReplications = Integer.parseInt(parts[1]);
         addFixedReplicationDescriptorToList(fixReplication, numberOfFixedReplications);
+	counterDescriptors++;
         // log.finest("x_all: " + ctx.x_all().toString());
     }
 
@@ -77,6 +78,7 @@ public class CountReplicationDescriptor extends BUFRBaseListener {
     public void enterElement_descriptor(BUFRParser.Element_descriptorContext ctx) {
         log.finest("Element Descriptor Ctx: " + ctx.getText());
         counterDescriptors++;
+
         if (numberOfFixedReplications > 0) {
             numberOfFixedReplications--;
         }
@@ -84,6 +86,7 @@ public class CountReplicationDescriptor extends BUFRBaseListener {
         if (numberOfDelayedReplications > 0) {
             numberOfDelayedReplications--;
         }
+
         this.processDescriptor();
     }
 
@@ -106,6 +109,10 @@ public class CountReplicationDescriptor extends BUFRBaseListener {
     @Override
     public void enterOperator_236000(BUFRParser.Operator_236000Context ctx) {
         log.finest("Operator 236000 Descriptor Ctx: " + ctx.getText());
+	// Simple check to detect operator 2 36 000 at the beginning of a template
+	if (counterDescriptors == 0) {
+	    errors.add("Operator 236000 at the beginning of template is not allowed");
+	}
         counterDescriptors++;
         this.processDescriptor();
     }
@@ -164,6 +171,7 @@ public class CountReplicationDescriptor extends BUFRBaseListener {
         log.finest("Replications: " + Integer.parseInt(parts[1]));
         numberOfDelayedReplications = Integer.parseInt(parts[1]);
         addDelayedReplicationDescriptorToList(delayedReplication, numberOfDelayedReplications);
+	counterDescriptors++;
      }
 
     @Override public void enterDelayed_replication_expr_one_element(BUFRParser.Delayed_replication_expr_one_elementContext ctx) { 
@@ -174,6 +182,7 @@ public class CountReplicationDescriptor extends BUFRBaseListener {
         log.finest("Replications: " + Integer.parseInt(parts[1]));
         numberOfDelayedReplications = Integer.parseInt(parts[1]);
         addDelayedReplicationDescriptorToList(delayedReplication, numberOfDelayedReplications);
+	counterDescriptors++;
     }
     @Override
     public void exitTemplate(BUFRParser.TemplateContext ctx) {

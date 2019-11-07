@@ -23,7 +23,16 @@ expr: (
 /* 94.5.3.2 If F = 0, the descriptor shall be called an “element descriptor”.
  An element descriptor shall define a single data item by reference to Table B. */
 element_descriptor:
-	F_EL SPACE (X_PARTS | X_036 | X_001) SPACE y_all | data_description_operator_qualifier;
+	F_EL SPACE (X_PARTS | X_036 | X_001) SPACE (
+			Y_PARTS
+			| Y_001
+			| Y_002
+			| Y_011
+			| Y_012
+			| Y_021
+			| Y_031
+			| Y_000) 
+		| data_description_operator_qualifier;
 
 
 /* 94.5.5.1 If F = 2, the descriptor shall be called an “operator descriptor”. An operator descriptor shall
@@ -38,7 +47,15 @@ operator_descriptor_expr:
 	;
 
 operator_descriptor:
-	F_OP SPACE (X_PARTS | X_031 | X_001) SPACE y_all; 
+	F_OP SPACE (X_PARTS | X_031 | X_001) SPACE (
+			Y_PARTS
+			| Y_001
+			| Y_002
+			| Y_011
+			| Y_012
+			| Y_021
+			| Y_031
+			| Y_000) ; 
 
 
 /* 94.5.5.3 A data present bit-map shall be defined as a set of N one bit values corresponding to N data
@@ -48,7 +65,7 @@ replication operator followed by the element descriptor for the data present ind
 // 236000 101005 031031
 // 236000 101000 031001 031031
 operator_236000_expr:
-	operator_236000 SPACE (fixed_replication_descriptor_one_element | delayed_replication_expr_one_element) SPACE data_present_indicator
+	(operator_236000 SPACE ( fixed_replication_descriptor_one_element | delayed_replication_expr_one_element) SPACE data_present_indicator)
 	;
 
 operator_236000:
@@ -62,7 +79,15 @@ sequence descriptors by reference to Table D.
 Note: X denotes the Table D category, Y denotes the entry within the category. Table D entries contain
 lists of commonly associated descriptors for convenience.  */
 sequence_descriptor:
-	F_SEQ SPACE x_all SPACE y_all;
+	F_SEQ SPACE (X_001 | X_031 | X_036 | X_PARTS) SPACE  (
+			Y_PARTS
+			| Y_001
+			| Y_002
+			| Y_011
+			| Y_012
+			| Y_021
+			| Y_031
+			| Y_000) ;
 
 /*  94.5.4 The replication operation
 
@@ -97,12 +122,24 @@ delayed_replication_expr:
 ;
 
 fixed_replication_descriptor_part:
-F_REP SPACE (X_031 | X_036 | X_PARTS) SPACE y_without_0
+F_REP SPACE (X_031 | X_036 | X_PARTS) SPACE (Y_PARTS
+		| Y_001
+		| Y_002
+		| Y_011
+		| Y_012
+		| Y_021
+		| Y_031)
 // {System.out.println("Fixed Replicaton: Number of element to replicate: " + $x_all.text);}
 ;
 
 fixed_replication_descriptor_one_element:
-F_REP SPACE X_001 SPACE y_without_0
+(F_REP SPACE X_001 SPACE (Y_PARTS
+		| Y_001
+		| Y_002
+		| Y_011
+		| Y_012
+		| Y_021
+		| Y_031))
 ;
 
 delayed_replication_expr_part:
@@ -121,7 +158,7 @@ delayed_replication_descriptor_part:
 	;
 
 delayed_replication_descriptor_one_element:
-	F_REP SPACE X_001 SPACE Y_000
+	(F_REP SPACE X_001 SPACE Y_000)
 	;
 
  data_description_operator_qualifier: delayed_descriptor_replication_factor |
@@ -141,9 +178,11 @@ associated_field_significance: F_EL SPACE X_031 SPACE Y_021;
 
 data_present_indicator: F_EL SPACE X_031 SPACE Y_031;
 
-/* x_all als parser rule */
+/* x_all als parser rule 
 x_all : X_031 | X_PARTS | X_036 | X_001;
+*/
 
+/*
 y_all : y_without_0 | Y_000;
 
 y_without_0: 	Y_PARTS
@@ -154,6 +193,7 @@ y_without_0: 	Y_PARTS
 		| Y_021
 		| Y_031
 		;
+ */
 
 F_EL: ('0');
 F_REP: ('1');
@@ -180,21 +220,28 @@ Y_PARTS: ('0') ('0') ('3' .. '9')
 	| ('2') ('0' .. '4') ('0' .. '9')
 	| ('2') ('5') ('0' .. '5');
 
-SPACE: ' ';
+SPACE: (' ');
 
-X_001: '01';
+/* 
+X_ALL: X_001 | X_031 | X_036 | X_PARTS
+;
+*/
 
-X_031: '31';
+X_001: ('01');
 
-X_036: '36';
+X_031: ('31');
+
+X_036: ('36');
 
 X_PARTS: 
-	'00' | ('0')('2' .. '9')
+	('00') | ('0')('2' .. '9')
 	| ('1' .. '2') ('0' .. '9')
 	| '30'
 	| ('3') ('1' .. '5')
 	| ('3') ('7' .. '9')
 	| ('4' .. '5') ('0' .. '9')
 	| ('6') ('0' .. '3');
+
+
 
 WS: [\r\n\t]+ -> skip;
