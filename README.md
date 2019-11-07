@@ -6,7 +6,7 @@ The specification of the FM 94 BUFR is maintained by WMO in the (Manual on Codes
 # Motiviation
 A BUFR is build-up of sections. The following picture illustrates the different sections and their content.
 
-[![BUFR Sections](https://raw.githubusercontent.com/mheene/bufr-grammar/master/pics/sections.png)]
+[![BUFR Sections](https://github.com/mheene/bufr-grammar/blob/master/pics/sections.png)]
 
 Section 3 "Data description section" is the blue print for Section 4 "Data section".
 
