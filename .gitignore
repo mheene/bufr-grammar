@@ -6,4 +6,10 @@ archive/
 build/
 playground/
 docs/
+.classpath
+.project
+.settings/
+.vscode/
+target/
+tools/
 
