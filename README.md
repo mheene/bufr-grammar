@@ -37,6 +37,20 @@ In case of BUFR WMO maintains the specification in a human readable document whi
 
 # BUFR decoders and encoders
 
-As mention before no reference BUFR decoder or encoder exists. Nevertheless many BUFR decoders and encoders exists mostly developed by persons from the meteorological community. While writing a simple parser for CSV, JSON or XML isn't in most cases a big deal writing a BUFR decoder or encoder is different. Without having implemented a BUFR decoder or encoder yet I assume it is more a task of several 100 or even 1000 hours. 
+As mention before no reference BUFR decoder or encoder exists in addition no test suite with defined input and output exists. Nevertheless many BUFR decoders and encoders exists mostly developed by persons from the meteorological community. While writing a simple parser for CSV, JSON or XML isn't in most cases a big deal writing a BUFR decoder or encoder is different. Without having implemented a BUFR decoder or encoder yet I assume it is more a task of several 100s or even 1000s hours. In any case the developer of the BUFR decoder and encoder needs to read and interpret the specification. Therefore you will find BUFR decoders and encoders which implement different strategies. While one BUFR decoder tries to decode even wrong encoded BUFR messages other follow closer the rules and report an error. To demonstrate this we take a closer look to the specification of a data present bit-map. The specification defines a data present bit-map as follow:
 
- Obviously a replication descriptor can't be at the end. The 
+> 94.5.5.3 A data present bit-map shall be defined as a set of N one bit values corresponding to N data entities described by N element descriptors (including element descriptors for delayed replication, if present); the data description of a data present bit-map is comprised of a replication operator followed by the element descriptor for the data present indicator. 
+
+Note: At least for a non-native speaker this text is quite hard to understand :wink:
+
+Example:
+
+2 36 000 1 01 002 0 31 031
+
+while the following is wrong:
+
+2 36 000 0 31 031 0 31 031 (indeed it is the expanded descriptor list but according to the specification it **shall** contain a replication operator)
+
+You can find a test BUFR and the ecCodes filter to create the BUFR in the example directory.
+
+While the first example is decoded by all tested BUFR decoders (bufrtools(DWD), ecCodes (ECWMF), PyBufrKit, libecBUFR, Geo::BUFR and BUFRDC (ECWMF)) only bufrtools detect the wrong crafted data present bit-map.

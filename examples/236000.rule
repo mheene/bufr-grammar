@@ -1,0 +1,3 @@
+set unexpandedDescriptors = {1007, 1007, 222000, 236000, 101002, 031031, 1008};
+set pack=1;
+write;
