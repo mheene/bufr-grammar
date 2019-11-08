@@ -31,11 +31,12 @@ The following sequence of descriptors represents a valid sentence:
 
 The rules for applying and combining the descriptors are our grammar. 
 
-Note: You can find the grammar in BNF-style convention for the Java programming language on Oracle website  or in antlr-style on github.
+Note: You can find the [grammar in BNF-style convention for the Java programming language on Oracle website](https://docs.oracle.com/javase/specs/jls/se7/html/jls-18.html) or in [antlr-style on github](https://github.com/antlr/grammars-v4/tree/master/java).
 
+In case of BUFR WMO maintains the specification in a human readable document while a machine readable grammar does not exists. Furthermore no reference implementation of the BUFR specification exists.  
 
+# BUFR decoders and encoders
 
- ... (can than be described my a grammar like Java, python, ... . 
-
+As mention before no reference BUFR decoder or encoder exists. Nevertheless many BUFR decoders and encoders exists mostly developed by persons from the meteorological community. While writing a simple parser for CSV, JSON or XML isn't in most cases a big deal writing a BUFR decoder or encoder is different. Without having implemented a BUFR decoder or encoder yet I assume it is more a task of several 100 or even 1000 hours. 
 
  Obviously a replication descriptor can't be at the end. The 
