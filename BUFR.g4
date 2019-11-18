@@ -41,8 +41,7 @@ Notes:
 (1) X denotes the value corresponding to an operator defined within Table C.
 (2) Y contains a value to be used as an operand in completing the defined operation.  */
 operator_descriptor_expr:
-	operator_descriptor
-	| (operator_descriptor SPACE associated_field_significance)
+	operator_descriptor (SPACE associated_field_significance)?
 	| operator_236000_expr
 	;
 
