@@ -57,3 +57,5 @@ You can find a test BUFR and the ecCodes filter to create the BUFR in the exampl
 While the first example is decoded by all tested BUFR decoders (bufrtools(DWD), ecCodes (ECWMF), PyBufrKit, libecBUFR, Geo::BUFR and BUFRDC (ECWMF)) only bufrtools detect the wrong crafted data present bit-map.
 
 Example 2a:
+
+(Poster)[https://view.officeapps.live.com/op/view.aspx?src=https://github.com/mheene/bufr-grammar/blob/master/IN23D-0901_draft_00_2019112.pptx]
