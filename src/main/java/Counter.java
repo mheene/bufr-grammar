@@ -12,6 +12,9 @@ public class Counter {
 		BUFRLexer lexer = new BUFRLexer(input);
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
 		BUFRParser parser = new BUFRParser(tokens);
+		parser.removeErrorListeners();
+		VerboseListener verboseErrorListener = new VerboseListener();
+		parser.addErrorListener(verboseErrorListener);
 		ParseTree tree = parser.template();
 
 		ParseTreeWalker walker = new ParseTreeWalker();
@@ -23,6 +26,9 @@ public class Counter {
 		while (it.hasNext()) {
 			System.err.println(it.next());
 		}
+
+		System.err.println(verboseErrorListener.getErrors());
+		
 
 	}
 }

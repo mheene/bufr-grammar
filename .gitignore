@@ -12,4 +12,9 @@ docs/
 .vscode/
 target/
 tools/
+# Ignore Gradle project-specific cache directory
+.gradle
+gradle/
+gradlew
+gradlew.bat
 
