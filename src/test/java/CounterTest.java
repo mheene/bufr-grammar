@@ -5,13 +5,36 @@ import java.util.List;
 import java.util.Iterator;
 import java.io.*;
 
+import static org.junit.Assert.*;
+import org.junit.Test;
+
 @SuppressWarnings({ "all", "warnings", "unchecked", "unused", "cast", "deprecation" })
 public class CounterTest {
-	public static void testMain(String[] args) throws Exception {
-		// create a CharStream that reads from standard input
-	    final InputStream original = System.in;
-	    final FileInputStream fips = new FileInputStream(new File("wrong.txt"));
-	    System.setIn(fips);
+
+	class ParserErrorMessages {
+		private String iterationErrorText;
+		private String otherErrorText;
+
+		public ParserErrorMessages(String iterationErrorText, String otherErrorText) {
+			this.iterationErrorText = iterationErrorText;
+			this.otherErrorText = otherErrorText;
+		}
+
+		public String getIterationErrorText() {
+			return this.iterationErrorText;
+		}
+
+		public String getOtherErrorText() {
+			return this.getOtherErrorText();
+		}
+
+	}
+
+	private ParserErrorMessages parseFile(FileInputStream fis) throws Exception {
+		final InputStream original = System.in;
+
+		System.setIn(fis);
+		String iterationErrorString = null;
 
 		ANTLRInputStream input = new ANTLRInputStream(System.in);
 		BUFRLexer lexer = new BUFRLexer(input);
@@ -29,13 +52,179 @@ public class CounterTest {
 
 		Iterator<String> it = errors.listIterator();
 		while (it.hasNext()) {
-			System.err.println(it.next());
+			String errorText = it.next();
+			iterationErrorString = iterationErrorString + errorText;
+		}
+
+		ParserErrorMessages pem = new ParserErrorMessages(iterationErrorString, verboseErrorListener.getErrors());
+
+		System.setIn(original);
+
+		return pem;
+
+	}
+
+	@Test
+	public void testMain() throws Exception {
+		// create a CharStream that reads from standard input
+		final InputStream original = System.in;
+		final FileInputStream fips = new FileInputStream(
+				new File("build/classes/java/test/invalid/replications/wrong.txt"));
+		System.setIn(fips);
+
+		ANTLRInputStream input = new ANTLRInputStream(System.in);
+		BUFRLexer lexer = new BUFRLexer(input);
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+		BUFRParser parser = new BUFRParser(tokens);
+		parser.removeErrorListeners();
+		VerboseListener verboseErrorListener = new VerboseListener();
+		parser.addErrorListener(verboseErrorListener);
+		ParseTree tree = parser.template();
+
+		ParseTreeWalker walker = new ParseTreeWalker();
+		CountReplicationDescriptor crd = new CountReplicationDescriptor();
+		walker.walk(crd, tree);
+		List<String> errors = crd.getErrors();
+
+		Iterator<String> it = errors.listIterator();
+		while (it.hasNext()) {
+			String errorText = it.next();
+			assertNotNull("Iterations should not be null", errorText);
+			System.err.println(errorText);
 		}
 
 		System.err.println(verboseErrorListener.getErrors());
 
 		System.setIn(original);
 
+	}
+
+	@Test
+	public void testValidSequences() throws Exception {
+		final InputStream original = System.in;
+
+		final File validTestFileFolder = new File("build/classes/java/test/valid");
+		for (final File fileEntry : validTestFileFolder.listFiles()) {
+			if (fileEntry.isFile()) {
+				final FileInputStream fis = new FileInputStream(fileEntry);
+
+				System.setIn(fis);
+				String iterationErrorString = null;
+
+				ANTLRInputStream input = new ANTLRInputStream(System.in);
+				BUFRLexer lexer = new BUFRLexer(input);
+				CommonTokenStream tokens = new CommonTokenStream(lexer);
+				BUFRParser parser = new BUFRParser(tokens);
+				parser.removeErrorListeners();
+				VerboseListener verboseErrorListener = new VerboseListener();
+				parser.addErrorListener(verboseErrorListener);
+				ParseTree tree = parser.template();
+
+				ParseTreeWalker walker = new ParseTreeWalker();
+				CountReplicationDescriptor crd = new CountReplicationDescriptor();
+				walker.walk(crd, tree);
+				List<String> errors = crd.getErrors();
+
+				Iterator<String> it = errors.listIterator();
+				while (it.hasNext()) {
+					String errorText = it.next();
+					iterationErrorString = iterationErrorString + errorText;
+				}
+
+				
+				assertNull("Iteration Errors should be null for file: " + fileEntry.getName(), iterationErrorString);
+				assertNull("Other Errors should be null for file: " + fileEntry.getName(), verboseErrorListener.getErrors());
+				fis.close();
+				System.setIn(original);
+
+			}
+		}
+
+	}
+
+	@Test
+	public void testInvalid() throws Exception {
+		final InputStream original = System.in;
+
+		final File validTestFileFolder = new File("build/classes/java/test/invalid");
+		for (final File fileEntry : validTestFileFolder.listFiles()) {
+			if (fileEntry.isFile()) {
+				final FileInputStream fis = new FileInputStream(fileEntry);
+
+				System.setIn(fis);
+				String iterationErrorString = null;
+
+				ANTLRInputStream input = new ANTLRInputStream(System.in);
+				BUFRLexer lexer = new BUFRLexer(input);
+				CommonTokenStream tokens = new CommonTokenStream(lexer);
+				BUFRParser parser = new BUFRParser(tokens);
+				parser.removeErrorListeners();
+				VerboseListener verboseErrorListener = new VerboseListener();
+				parser.addErrorListener(verboseErrorListener);
+				ParseTree tree = parser.template();
+
+				ParseTreeWalker walker = new ParseTreeWalker();
+				CountReplicationDescriptor crd = new CountReplicationDescriptor();
+				walker.walk(crd, tree);
+				List<String> errors = crd.getErrors();
+
+				Iterator<String> it = errors.listIterator();
+				while (it.hasNext()) {
+					String errorText = it.next();
+					iterationErrorString = iterationErrorString + errorText;
+				}
+
+				
+				assertNull("Iteration Errors should be null for file: " + fileEntry.getName(), iterationErrorString);
+				assertNotNull("Other Errors should not be null for file: " + fileEntry.getName(), verboseErrorListener.getErrors());
+				fis.close();
+				System.setIn(original);
+
+			}
+		}
+
+	}
+
+	@Test
+	public void testInvalidReplications() throws Exception {
+		final InputStream original = System.in;
+
+		final File validTestFileFolder = new File("build/classes/java/test/invalid/replications");
+		for (final File fileEntry : validTestFileFolder.listFiles()) {
+			if (fileEntry.isFile()) {
+				final FileInputStream fis = new FileInputStream(fileEntry);
+
+				System.setIn(fis);
+				String iterationErrorString = null;
+
+				ANTLRInputStream input = new ANTLRInputStream(System.in);
+				BUFRLexer lexer = new BUFRLexer(input);
+				CommonTokenStream tokens = new CommonTokenStream(lexer);
+				BUFRParser parser = new BUFRParser(tokens);
+				parser.removeErrorListeners();
+				VerboseListener verboseErrorListener = new VerboseListener();
+				parser.addErrorListener(verboseErrorListener);
+				ParseTree tree = parser.template();
+
+				ParseTreeWalker walker = new ParseTreeWalker();
+				CountReplicationDescriptor crd = new CountReplicationDescriptor();
+				walker.walk(crd, tree);
+				List<String> errors = crd.getErrors();
+
+				Iterator<String> it = errors.listIterator();
+				while (it.hasNext()) {
+					String errorText = it.next();
+					iterationErrorString = iterationErrorString + errorText;
+				}
+
+				
+				assertNull("Iteration Errors should be null for file: " + fileEntry.getName(), iterationErrorString);
+				assertNotNull("Other Errors should not be null for file: " + fileEntry.getName(), verboseErrorListener.getErrors());
+				fis.close();
+				System.setIn(original);
+
+			}
+		}
 
 	}
 }

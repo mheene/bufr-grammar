@@ -4,6 +4,7 @@ build.sh
 .antlr/
 archive/
 build/
+bin/
 playground/
 docs/
 .classpath

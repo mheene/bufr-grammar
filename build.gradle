@@ -9,13 +9,23 @@ repositories {
 }
 
 task copyTestResources(type: Copy) {
-    from "${projectDir}/material/invalid/wrong.txt"
+    from "${projectDir}/material/"
     into "${buildDir}/classes/java/test"
 }
+
+
+
+test {
+    useJUnit()
+}
+
 
 test.dependsOn copyTestResources
 
 dependencies {
-    testImplementation group: 'junit', name: 'junit', version: '4.12'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.1.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.1.0'
+    testCompileOnly 'junit:junit:4.12'
+    testRuntimeOnly 'org.junit.vintage:junit-vintage-engine:5.1.0'
     antlr "org.antlr:antlr4:4.7.2" // use ANTLR version 4
 }
