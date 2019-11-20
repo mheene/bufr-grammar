@@ -49,9 +49,12 @@ task grun(type: JavaExec) {
       def cmdArgs = (inputFile.split(','))
       def preDef = ["BUFR", "template", "-gui"]
       args = preDef + cmdArgs[0]
-  } else  {
+  } 
+  /*
+  else  {
     throw new GradleException("Missing parameter.\n Usage: gradlew grun '-PinputFile=material/valid/301003.txt'")
   }
+  */
 }
 
 test {

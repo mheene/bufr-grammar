@@ -39,8 +39,9 @@ A basic version of a BUFR grammar is available on [here](https://github.com/mhee
 Note: You can find the [grammar in BNF<sup>1</sup>-style convention for the Java programming language on Oracle website](https://docs.oracle.com/javase/specs/jls/se7/html/jls-18.html) or in [antlr-style on github](https://github.com/antlr/grammars-v4/tree/master/java) 
 <sup>1</sup> Backus-Naur-Form.
 
-In case of BUFR WMO maintains the specification in a human readable document while a machine readable grammar does not exists. Furthermore no reference implementation of the BUFR specification exists.  
-
 # Usage
-The project uses [gradle](https://gradle.org/) as a build system. If you don't have a gradle wrapper please create one by gradle wrapper
-* Build the project as a standalone jar
+The project uses [gradle](https://gradle.org/) as a build system. If you don't have a gradle wrapper please create one by `gradle wrapper`.
+* `gradlew jar` - builds the project as a standalone jar 
+* `java -jar build/libs/counter-0.0.1.jar material/valid/301003.txt` - checks the file 301003.txt based on the BUFR grammar and the additional replication descriptor checks
+* `gradlew grun '-PinputFile=material/valid/301003.txt'` - builds with grun a parse tree of the file 301003.txt
+* `gradlew test` - checks all WMO sequences and some additional test against the grammar dn the additional replication descriptor checks
