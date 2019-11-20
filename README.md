@@ -29,7 +29,9 @@ Looking from a different perspective the rules as a whole can be interpreted as 
 and clauses. The following sequence of descriptors is a valid sentence: 3 10 014 2 22 000 2 36 000 1 01 103 0 31 031 0 01 031. The rules for
 applying and combining the descriptors are our grammar. Additional rules for the replication descriptors are implemented as listener pattern.
 
-The following picture shows a railroad diagram for the parser rule “operator descriptor expr” ![railroad diagram](https://github.com/mheene/bufr-grammar/blob/gradle/pics/operator_expr.png). You can find all railroad diagrams of the BUFR grammar in the [docs](https://github.com/mheene/bufr-grammar/tree/gradle/docs/bufr-grammar.html) folder.
+The following picture shows a railroad diagram for the parser rule “operator descriptor expr” ![railroad diagram](https://github.com/mheene/bufr-grammar/blob/gradle/pics/operator_expr.png). 
+
+You can find all railroad diagrams of the BUFR grammar in the [docs](https://github.com/mheene/bufr-grammar/tree/gradle/docu/bufr-grammar.html) folder.
 
 
 
