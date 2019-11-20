@@ -7,8 +7,8 @@ apply plugin: 'application'
 mainClassName = 'Counter'
 
 jar {
-     group = "BUFR Grammar"
-     description = "Builds a JAR file with Counter as executable location: build/libs"
+  group = "BUFR Grammar"
+  description = "Builds a JAR file with Counter as executable location: build/libs"
   archiveBaseName = 'counter'
   archiveVersion =  '0.0.1'
   
@@ -19,6 +19,8 @@ jar {
   from {
     configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) }
   }
+
+  println "Location of the JAR file: build/libs"
 }
 
 
@@ -47,6 +49,8 @@ task grun(type: JavaExec) {
       def cmdArgs = (inputFile.split(','))
       def preDef = ["BUFR", "template", "-gui"]
       args = preDef + cmdArgs[0]
+  } else  {
+    throw new GradleException("Missing parameter.\n Usage: gradlew grun '-PinputFile=material/valid/301003.txt'")
   }
 }
 
