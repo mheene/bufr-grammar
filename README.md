@@ -33,7 +33,7 @@ The following picture shows a railroad diagram for the parser rule “operator d
 
 You can find all railroad diagrams of the BUFR grammar in the [docs](https://github.com/mheene/bufr-grammar/tree/gradle/docu/bufr-grammar.html) folder.
 
-
+A basic version of a BUFR grammar is available on [here](https://github.com/mheene/bufr-grammar/blob/gradle/src/main/antlr/BUFR.g4). The grammar is formulated in ANTLR(https://www.antlr.org/). With the help of the grammar a BUFR template developer can now check her/his template for syntax errors. The BUFR specification is maintained by WMO as a human readable document while a machine readable grammar does not exists. Furthermore no reference implementation of the BUFR specification exists. Therefore a validation of a BUFR decoder/encoder or an BUFR against the specification isn’t easy. This step could be simplified with a grammar.
 
 
 Note: You can find the [grammar in BNF<sup>1</sup>-style convention for the Java programming language on Oracle website](https://docs.oracle.com/javase/specs/jls/se7/html/jls-18.html) or in [antlr-style on github](https://github.com/antlr/grammars-v4/tree/master/java) 
@@ -41,26 +41,6 @@ Note: You can find the [grammar in BNF<sup>1</sup>-style convention for the Java
 
 In case of BUFR WMO maintains the specification in a human readable document while a machine readable grammar does not exists. Furthermore no reference implementation of the BUFR specification exists.  
 
-# BUFR decoders and encoders
-
-As mention before no reference BUFR decoder or encoder exists in addition no test suite exists. Nevertheless many BUFR decoders and encoders exists mostly developed by persons from the meteorological community. While writing a simple parser for CSV, JSON or XML isn't in most cases a big deal writing a BUFR decoder or encoder is different. Without having implemented a BUFR decoder or encoder yet I assume it is more a task of several 100s or even 1000s hours. In any case the developer of the BUFR decoder and encoder needs to read and interpret the specification. Therefore you will find BUFR decoders and encoders which implement different strategies. While one BUFR decoder tries to decode even wrong encoded BUFR messages other follow closer the rules and report an error. To demonstrate this we take a closer look to the specification of a data present bit-map. The specification defines a data present bit-map as follow:
-
-> 94.5.5.3 A data present bit-map shall be defined as a set of N one bit values corresponding to N data entities described by N element descriptors (including element descriptors for delayed replication, if present); the data description of a data present bit-map is comprised of a replication operator followed by the element descriptor for the data present indicator. 
-
-Note: At least for a non-native speaker this text is quite hard to understand :wink:
-
-Example 1:
-
-2 36 000 1 01 002 0 31 031
-
-while the following is wrong:
-
-2 36 000 0 31 031 0 31 031 (indeed it is the expanded descriptor list but according to the specification it **shall** contain a replication operator)
-
-You can find a test BUFR and the ecCodes filter to create the BUFR in the example directory.
-
-While the first example is decoded by all tested BUFR decoders (bufrtools(DWD), ecCodes (ECWMF), PyBufrKit, libecBUFR, Geo::BUFR and BUFRDC (ECWMF)) only bufrtools detect the wrong crafted data present bit-map.
-
-Example 2a:
-
-(Poster)[https://view.officeapps.live.com/op/view.aspx?src=https://github.com/mheene/bufr-grammar/blob/master/IN23D-0901_draft_00_2019112.pptx]
+# Usage
+The project uses [gradle](https://gradle.org/) as a build system. If you don't have a gradle wrapper please create one by gradle wrapper
+* Build the project as a standalone jar
