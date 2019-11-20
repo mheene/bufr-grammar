@@ -1,5 +1,25 @@
 apply plugin: 'java'
 apply plugin: 'antlr'
+apply plugin: 'application'
+
+
+// Include dependent libraries in archive.
+mainClassName = 'Counter'
+
+jar {
+     group = "BUFR Grammar"
+     description = "Builds a JAR file with Counter as executable location: build/libs"
+  archiveBaseName = 'counter'
+  archiveVersion =  '0.0.1'
+  
+  manifest { 
+    attributes "Main-Class": "$mainClassName"
+  }  
+
+  from {
+    configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+  }
+}
 
 
 sourceCompatibility = 1.8
@@ -8,12 +28,27 @@ repositories {
     mavenCentral()
 }
 
+
 task copyTestResources(type: Copy) {
     from "${projectDir}/material/"
     into "${buildDir}/classes/java/test"
 }
 
 
+task grun(type: JavaExec) {
+  group = "BUFR Grammar"
+  description = "ANTLR grun task: "
+  description += "gradlew grun '-PinputFile=material/valid/301003.txt'"
+
+  classpath = sourceSets.main.runtimeClasspath
+
+  main = 'org.antlr.v4.gui.TestRig'
+  if (project.hasProperty('inputFile')) {
+      def cmdArgs = (inputFile.split(','))
+      def preDef = ["BUFR", "template", "-gui"]
+      args = preDef + cmdArgs[0]
+  }
+}
 
 test {
     useJUnit()
@@ -25,7 +60,8 @@ test.dependsOn copyTestResources
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.1.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.1.0'
-    testCompileOnly 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.12'
     testRuntimeOnly 'org.junit.vintage:junit-vintage-engine:5.1.0'
     antlr "org.antlr:antlr4:4.7.2" // use ANTLR version 4
+    //compile "org.antlr:antlr4:4.7.2"
 }
