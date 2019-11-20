@@ -3,7 +3,7 @@
 This repository contains a grammar for FM 94 BUFR (Binary universal form for the representation of meteorological data).
 The specification of the FM 94 BUFR is maintained by WMO in the [Manual on Codes](https://library.wmo.int/doc_num.php?explnum_id=5831).
 
-# Motivation
+# BUFR Grammar - Introduction
 A BUFR is a binary code to encode meteorological data. The BUFR consists of sections. The following picture illustrates the different sections and their content.
 
 ![BUFR Sections](https://github.com/mheene/bufr-grammar/blob/master/pics/sections.png)
@@ -20,16 +20,17 @@ A BUFR is a binary code to encode meteorological data. The BUFR consists of sect
 
 * F = 3 is the "sequence descriptor". A sequence descriptor defines a list of element  descriptors,  replication  descriptors,  operator  descriptors  and/or  sequence descriptors.  [Table D](http://www.wmo.int/pages/prog/www/WMOCodes/WMO306_vI2/LatestVERSION/WMO306_vI2_BUFR_TableD_en.pdf) contains all "sequence descriptors".
 
-For the construction of **Section 3** with the 4 descriptors (element, replication, operator and sequence descriptor) described above certain rules apply. The rules are described in detail in the [Manual on Codes](https://library.wmo.int/doc_num.php?explnum_id=5831) starting at regulations 94.1 and following. In addition the rules in the tables apply in particular those for the operator descriptors.
+For the construction of **Section 3** with the 4 types of descriptors (element, replication, operator
+and sequence descriptor) described above certain rules apply. The rules are described in detail
+in the [Manual on Codes](https://library.wmo.int/doc_num.php?explnum_id=5831) starting at regulations 94.1 and following.
 
-Looking from a different perspective the rules as a whole can be interpreted as a language. This language is a set of valid sentences, and sentences are composed of phrases and clauses. Hereby a sentence structure follows a grammar. 
+# BUFR Grammar – Implementation
+Looking from a different perspective the rules as a whole can be interpreted as a language. This language is a set of valid sentences, and sentences are composed of phrases and clauses. Hereby a sentence structure follows a grammar. In our case the descriptors represent the phrases
+and clauses. The following sequence of descriptors is a valid sentence: 3 10 014 2 22 000 2 36 000 1 01 103 0 31 031 0 01 031. The rules for
+applying and combining the descriptors are our grammar. Additional rules for the replication descriptors are implemented as listener pattern.
 
-In our case the descriptors represent the phrases and clauses. 
-The following sequence of descriptors represents a valid sentence:
+The following picture shows a railroad diagram for the parser rule “operator descriptor expr” ![railroad diagram](https://github.com/mheene/bufr-grammar/blob/master/pics/operator_expr.png). You can find all railroad diagrams of the BUFR grammar in the [docs](https://github.com/mheene/bufr-grammar/tree/master/docs/bufr-grammar.html) folder.
 
-0 01 001 0 01 002 0 01 015 0 02 001 (*Sequence 3 01 004: Surface station identification*)
-
-The rules for applying and combining the descriptors are our grammar. 
 
 Note: You can find the [grammar in BNF<sup>1</sup>-style convention for the Java programming language on Oracle website](https://docs.oracle.com/javase/specs/jls/se7/html/jls-18.html) or in [antlr-style on github](https://github.com/antlr/grammars-v4/tree/master/java) 
 <sup>1</sup> Backus-Naur-Form.
