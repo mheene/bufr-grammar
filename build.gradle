@@ -20,7 +20,7 @@ jar {
     configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) }
   }
 
-  println "Location of the JAR file: build/libs"
+  //println "Location of the JAR file: build/libs"
 }
 
 
