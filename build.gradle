@@ -20,7 +20,9 @@ jar {
     configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) }
   }
 
-  //println "Location of the JAR file: build/libs"
+  doLast {
+    println "Location of the JAR file: build/libs/" 
+  }
 }
 
 
@@ -42,6 +44,11 @@ task grun(type: JavaExec) {
   description = "ANTLR grun task: "
   description += "gradlew grun '-PinputFile=material/valid/301003.txt'"
 
+  doFirst {
+    if (!project.hasProperty('inputFile')) 
+        throw new GradleException("Missing parameter.\n Usage: gradlew grun '-PinputFile=material/valid/301003.txt'")
+  }
+  
   classpath = sourceSets.main.runtimeClasspath
 
   main = 'org.antlr.v4.gui.TestRig'
@@ -50,11 +57,7 @@ task grun(type: JavaExec) {
       def preDef = ["BUFR", "template", "-gui"]
       args = preDef + cmdArgs[0]
   } 
-  /*
-  else  {
-    throw new GradleException("Missing parameter.\n Usage: gradlew grun '-PinputFile=material/valid/301003.txt'")
-  }
-  */
+ 
 }
 
 test {
@@ -70,5 +73,5 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     testRuntimeOnly 'org.junit.vintage:junit-vintage-engine:5.1.0'
     antlr "org.antlr:antlr4:4.7.2" // use ANTLR version 4
-    //compile "org.antlr:antlr4:4.7.2"
+  
 }
