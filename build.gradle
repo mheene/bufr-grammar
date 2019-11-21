@@ -11,6 +11,7 @@ jar {
   description = "Builds a JAR file with Counter as executable location: build/libs"
   archiveBaseName = 'counter'
   archiveVersion =  '0.0.1'
+ 
   
   manifest { 
     attributes "Main-Class": "$mainClassName"

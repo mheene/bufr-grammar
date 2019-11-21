@@ -41,7 +41,7 @@ Note: You can find the [grammar in BNF<sup>1</sup>-style convention for the Java
 
 # Usage
 The project uses [gradle](https://gradle.org/) as a build system. If you don't have a gradle wrapper please create one by `gradle wrapper`.
-* `gradlew jar` - builds the project as a standalone jar 
+* `gradlew jar` - builds the project as a standalone jar. You can find the jar in the directory /build/libs
 * `java -jar build/libs/counter-0.0.1.jar material/valid/301003.txt` - checks the file 301003.txt based on the BUFR grammar and the additional replication descriptor checks
-* `gradlew grun '-PinputFile=material/valid/301003.txt'` - builds with grun a parse tree of the file 301003.txt
-* `gradlew test` - checks all WMO sequences and some additional test against the grammar dn the additional replication descriptor checks
+* `gradlew grun '-PinputFile=material/valid/301003.txt'` - builds with grun (ANTLR test rig) a parse tree of the file 301003.txt
+* `gradlew test` - checks all WMO sequences and some additional test cases against the grammar and the additional replication descriptor checks

@@ -40,7 +40,8 @@ public class Counter {
 			System.err.println("Errors iterator: " + it.next());
 		}
 
-		System.err.println("Errors Listener: " + verboseErrorListener.getErrors());
+		if (verboseErrorListener.getErrors() != null)
+			System.err.println("Errors Listener: " + verboseErrorListener.getErrors());
 		
 
 	}
