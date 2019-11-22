@@ -22,7 +22,7 @@ jar {
   }
 
   doLast {
-    println "Location of the JAR file: build/libs/" 
+    println "Location of the JAR file: build/libs/"
   }
 }
 
@@ -34,6 +34,10 @@ repositories {
 }
 
 
+tasks.withType(JavaCompile) {
+    options.compilerArgs += ['-Xlint:deprecation']
+}
+
 task copyTestResources(type: Copy) {
     from "${projectDir}/material/"
     into "${buildDir}/classes/java/test"
@@ -43,11 +47,11 @@ task copyTestResources(type: Copy) {
 task grun(type: JavaExec) {
   group = "BUFR Grammar"
   description = "ANTLR grun task: "
-  description += "gradlew grun '-PinputFile=material/valid/301003.txt'"
+  description += "gradlew grun -PinputFile=material/valid/301003.txt"
 
   doFirst {
     if (!project.hasProperty('inputFile')) 
-        throw new GradleException("Missing parameter.\n Usage: gradlew grun '-PinputFile=material/valid/301003.txt'")
+        throw new GradleException("Missing parameter.\n Usage: gradlew grun -PinputFile=material/valid/301003.txt")
   }
   
   classpath = sourceSets.main.runtimeClasspath
@@ -63,6 +67,9 @@ task grun(type: JavaExec) {
 
 test {
     useJUnit()
+      doLast {
+      	     println "Location of the testreport: build/reports/tests/test/index.html" 
+      }
 }
 
 
