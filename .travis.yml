@@ -1,0 +1,25 @@
+language: java
+
+os:
+- linux
+
+branches:
+  only:
+    - gradle
+
+
+jdk:
+- oraclejdk8
+- oraclejdk11
+- oraclejdk12
+- oraclejdk13
+- openjdk8
+- openjdk11
+- openjdk13
+- openjdk-ea
+
+before_script:
+  - gradle wrapper --gradle-version 6.0.1 
+
+script:
+  - ./gradlew clean test
