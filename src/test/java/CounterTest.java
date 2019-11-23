@@ -6,8 +6,11 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ArrayList;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
@@ -35,40 +38,41 @@ public class CounterTest {
 
 	}
 
-	private ParserErrorMessages parseFile(File p_file) throws Exception {
-		final InputStream original = System.in;
-		final FileInputStream fis = new FileInputStream(p_file);
-		System.setIn(fis);
+	private List<ParserErrorMessages> parseFile(File validTestFileFolder) throws Exception {
+		// final InputStream original = System.in;
+		// final FileInputStream fis = new FileInputStream(p_file);
+		// System.setIn(fis);
 		String iterationErrorString = null;
+		ArrayList<ParserErrorMessages> p_list = new ArrayList<ParserErrorMessages>();
 
-		ANTLRInputStream input = new ANTLRInputStream(System.in);
-		BUFRLexer lexer = new BUFRLexer(input);
-		CommonTokenStream tokens = new CommonTokenStream(lexer);
-		BUFRParser parser = new BUFRParser(tokens);
-		parser.removeErrorListeners();
-		VerboseListener verboseErrorListener = new VerboseListener();
-		parser.addErrorListener(verboseErrorListener);
-		ParseTree tree = parser.template();
+		for (final File fileEntry : validTestFileFolder.listFiles()) {
+			if (fileEntry.isFile()) {
+				CharStream input = CharStreams.fromPath(fileEntry.toPath());
+				BUFRLexer lexer = new BUFRLexer(input);
+				CommonTokenStream tokens = new CommonTokenStream(lexer);
+				BUFRParser parser = new BUFRParser(tokens);
+				parser.removeErrorListeners();
+				VerboseListener verboseErrorListener = new VerboseListener();
+				parser.addErrorListener(verboseErrorListener);
+				ParseTree tree = parser.template();
 
-		ParseTreeWalker walker = new ParseTreeWalker();
-		CountReplicationDescriptor crd = new CountReplicationDescriptor();
-		walker.walk(crd, tree);
-		List<String> errors = crd.getErrors();
+				ParseTreeWalker walker = new ParseTreeWalker();
+				CountReplicationDescriptor crd = new CountReplicationDescriptor();
+				walker.walk(crd, tree);
+				List<String> errors = crd.getErrors();
 
-		Iterator<String> it = errors.listIterator();
-		while (it.hasNext()) {
-			String errorText = it.next();
-			iterationErrorString = iterationErrorString + errorText;
+				Iterator<String> it = errors.listIterator();
+				while (it.hasNext()) {
+					String errorText = it.next();
+					iterationErrorString = iterationErrorString + errorText;
+				}
+
+				ParserErrorMessages pem = new ParserErrorMessages(iterationErrorString,
+						verboseErrorListener.getErrors());
+				p_list.add(pem);
+			}
 		}
-
-		ParserErrorMessages pem = new ParserErrorMessages(iterationErrorString, verboseErrorListener.getErrors());
-
-		fis.close();
-
-		System.setIn(original);
-
-		return pem;
-
+		return p_list;
 	}
 
 	@Test
@@ -108,17 +112,18 @@ public class CounterTest {
 
 	@Test
 	public void testValidSequences() throws Exception {
-		final InputStream original = System.in;
+		// final InputStream original = System.in;
 
 		final File validTestFileFolder = new File("build/classes/java/test/valid");
+		int fileCounter = 0;
 		for (final File fileEntry : validTestFileFolder.listFiles()) {
 			if (fileEntry.isFile()) {
-				final FileInputStream fis = new FileInputStream(fileEntry);
+				// final FileInputStream fis = new FileInputStream(fileEntry);
 
-				System.setIn(fis);
+				// System.setIn(fis);
 				String iterationErrorString = null;
-
-				ANTLRInputStream input = new ANTLRInputStream(System.in);
+				CharStream input = CharStreams.fromPath(fileEntry.toPath());
+				// ANTLRInputStream input = new ANTLRInputStream(System.in);
 				BUFRLexer lexer = new BUFRLexer(input);
 				CommonTokenStream tokens = new CommonTokenStream(lexer);
 				BUFRParser parser = new BUFRParser(tokens);
@@ -138,14 +143,15 @@ public class CounterTest {
 					iterationErrorString = iterationErrorString + errorText;
 				}
 
-				
 				assertNull("Iteration Errors should be null for file: " + fileEntry.getName(), iterationErrorString);
-				assertNull("Other Errors should be null for file: " + fileEntry.getName(), verboseErrorListener.getErrors());
-				fis.close();
-				System.setIn(original);
-
+				assertNull("Other Errors should be null for file: " + fileEntry.getName(),
+						verboseErrorListener.getErrors());
+				// fis.close();
+				// System.setIn(original);
+				fileCounter++;
 			}
 		}
+		System.out.println("Number of processed files: " + fileCounter);
 
 	}
 
@@ -181,9 +187,9 @@ public class CounterTest {
 					iterationErrorString = iterationErrorString + errorText;
 				}
 
-				
 				assertNull("Iteration Errors should be null for file: " + fileEntry.getName(), iterationErrorString);
-				assertNotNull("Other Errors should not be null for file: " + fileEntry.getName(), verboseErrorListener.getErrors());
+				assertNotNull("Other Errors should not be null for file: " + fileEntry.getName(),
+						verboseErrorListener.getErrors());
 				fis.close();
 				System.setIn(original);
 
@@ -224,9 +230,10 @@ public class CounterTest {
 					iterationErrorString = iterationErrorString + errorText;
 				}
 
-				
-				assertNotNull("Iteration Errors should not be null for file: " + fileEntry.getName(), iterationErrorString);
-				assertNull("Other Errors should be null for file: " + fileEntry.getName(), verboseErrorListener.getErrors());
+				assertNotNull("Iteration Errors should not be null for file: " + fileEntry.getName(),
+						iterationErrorString);
+				assertNull("Other Errors should be null for file: " + fileEntry.getName(),
+						verboseErrorListener.getErrors());
 				fis.close();
 				System.setIn(original);
 
@@ -267,15 +274,16 @@ public class CounterTest {
 					iterationErrorString = iterationErrorString + errorText;
 				}
 
-				assertNotNull("Iteration Errors should not be null for file: " + fileEntry.getName(), iterationErrorString);
-				assertNotNull("Other Errors should not be null for file: " + fileEntry.getName(), verboseErrorListener.getErrors());
-		
-				
+				assertNotNull("Iteration Errors should not be null for file: " + fileEntry.getName(),
+						iterationErrorString);
+				assertNotNull("Other Errors should not be null for file: " + fileEntry.getName(),
+						verboseErrorListener.getErrors());
+
 				fis.close();
 				System.setIn(original);
 
 			}
 		}
-	
+
 	}
 }

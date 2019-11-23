@@ -6,6 +6,7 @@ apply plugin: 'application'
 // Include dependent libraries in archive.
 mainClassName = 'Counter'
 
+
 jar {
   group = "BUFR Grammar"
   description = "Builds a JAR file with Counter as executable location: build/libs"
