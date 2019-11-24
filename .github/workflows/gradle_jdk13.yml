@@ -6,7 +6,7 @@ name: Java CI with JDK 13
 on:
   push:
     branches: 
-      - gradle
+      - master
 
 jobs:
   build:

@@ -3,7 +3,7 @@ name: Java CI multi OS & JDK
 on:
   push:
     branches: 
-      - gradle
+      - master
 
 jobs:
   build:

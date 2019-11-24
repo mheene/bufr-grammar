@@ -6,7 +6,6 @@ archive/
 build/
 bin/
 playground/
-docs/
 .classpath
 .project
 .settings/

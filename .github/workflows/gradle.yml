@@ -4,7 +4,7 @@ name: Java CI
 on:
   push:
     branches: 
-      - gradle
+      - master
 
 jobs:
   build:
