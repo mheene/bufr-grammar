@@ -1,7 +1,7 @@
 /*
 MIT License
 
-Copyright (c) 2019 Markus Heene
+Copyright (c) 2019 Markus Heene <Markus.Heene@dwd.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
