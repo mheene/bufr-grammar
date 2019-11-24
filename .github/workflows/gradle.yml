@@ -1,3 +1,4 @@
+# Basic test as template
 name: Java CI
 
 on:

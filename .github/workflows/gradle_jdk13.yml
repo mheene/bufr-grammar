@@ -1,3 +1,6 @@
+# Action uses gradle-command
+# https://github.com/marketplace/actions/gradle-command
+# Gradle 6 required for JDK 13
 name: Java CI with JDK 13
 
 on:
@@ -23,4 +26,3 @@ jobs:
       with:
         gradle-version: current
         arguments: test        
-      
