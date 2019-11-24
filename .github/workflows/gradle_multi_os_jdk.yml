@@ -1,0 +1,25 @@
+name: Java CI
+
+on:
+  push:
+    branches: 
+      - gradle
+
+jobs:
+  build:
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-18.04, ubuntu-16.04, windows-latest, macOS-latest]
+        java: [ 8, 9, 10, 11, 12, 13]
+    
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up JDK
+      uses: actions/setup-java@v1
+      with:
+        java-version: ${{ matrix.java }}
+    - name: Build with Gradle
+      run: ./gradlew build
