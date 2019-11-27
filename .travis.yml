@@ -5,7 +5,7 @@ os:
 
 branches:
   only:
-    - gradle
+    - master
 
 
 jdk:

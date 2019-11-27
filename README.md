@@ -31,17 +31,46 @@ applying and combining the descriptors are our grammar. Additional rules for the
 
 The following picture shows a railroad diagram for the parser rule “operator descriptor expr” ![railroad diagram](https://github.com/mheene/bufr-grammar/blob/gradle/pics/operator_expr.png). 
 
-You can find all railroad diagrams of the BUFR grammar in the [docs](https://github.com/mheene/bufr-grammar/tree/gradle/docu/bufr-grammar.html) folder.
+You can find all railroad diagrams of the BUFR grammar in the [BUFR grammar](https://mheene.github.io/bufr-grammar.html).
 
-A basic version of a BUFR grammar is available on [here](https://github.com/mheene/bufr-grammar/blob/gradle/src/main/antlr/BUFR.g4). The grammar is formulated in ANTLR(https://www.antlr.org/). With the help of the grammar a BUFR template developer can now check her/his template for syntax errors. The BUFR specification is maintained by WMO as a human readable document while a machine readable grammar does not exists. Furthermore no reference implementation of the BUFR specification exists. Therefore a validation of a BUFR decoder/encoder or an BUFR against the specification isn’t easy. This step could be simplified with a grammar.
+A basic version of a BUFR grammar is available on [here](https://github.com/mheene/bufr-grammar/blob/gradle/src/main/antlr/BUFR.g4). The grammar is formulated in [ANTLR](https://www.antlr.org/). With the help of the grammar a BUFR template developer can now check her/his template for syntax errors. The BUFR specification is maintained by WMO as a human readable document while a machine readable grammar does not exists. Furthermore no reference implementation of the BUFR specification exists. Therefore a validation of a BUFR decoder/encoder or an BUFR against the specification isn’t easy. This step could be simplified with a grammar.
 
 
 Note: You can find the [grammar in BNF<sup>1</sup>-style convention for the Java programming language on Oracle website](https://docs.oracle.com/javase/specs/jls/se7/html/jls-18.html) or in [antlr-style on github](https://github.com/antlr/grammars-v4/tree/master/java) 
 <sup>1</sup> Backus-Naur-Form.
 
 # Usage
-The project uses [gradle](https://gradle.org/) as a build system. If you don't have a gradle wrapper please create one by `gradle wrapper`.
-* `gradlew jar` - builds the project as a standalone jar. You can find the jar in the directory /build/libs
-* `java -jar build/libs/counter-0.0.1.jar material/valid/301003.txt` - checks the file 301003.txt based on the BUFR grammar and the additional replication descriptor checks
-* `gradlew grun '-PinputFile=material/valid/301003.txt'` - builds with grun (ANTLR test rig) a parse tree of the file 301003.txt
-* `gradlew test` - checks all WMO sequences and some additional test cases against the grammar and the additional replication descriptor checks
+The project uses [gradle](https://gradle.org/) as a build tool. The project comes with a gradle wrapper. In case you consider to create an own gradle wrapper please you a recent gradle version (5.x or higher) installation and keep in mind that JDK 13 requirems a gradle version 6.x.
+
+Clone tis repository:
+
+```
+git clone https://github.com/mheene/bufr-grammar.git
+```
+
+Build the project as a standalone jar:
+
+```
+cd bufr-grammar
+gradlew jar
+```
+
+The jar file contains all dependencies. You will find the jar in the directory /build/libs
+
+Check the file 301003.txt with the BUFR grammar and the additional replication descriptor checks:
+
+```
+java -jar build/libs/counter-0.0.1.jar material/valid/301003.txt
+```
+
+Use ANTLRs test rig (grun) to check a file against the grammar and visualize the parse tree:
+
+```
+gradlew grun -PinputFile=material/valid/301003.txt
+```
+
+Verify all WMO sequences (Table D) against the grammar (including additional replication descriptor checks) and some additional test cases.
+
+```
+gradlew test
+``` 
