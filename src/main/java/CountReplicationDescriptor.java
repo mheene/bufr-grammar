@@ -21,7 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-//import org.antlr.v4.runtime.tree.TerminalNode;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -37,8 +37,8 @@ public class CountReplicationDescriptor extends BUFRBaseListener {
     private int numberOfFixedReplications = 0;
     private int numberOfDelayedReplications = 0;
 
-    private ArrayList<ReplicationDescriptor> descriptorList = new ArrayList<ReplicationDescriptor>();
-    private List<String> errors = new ArrayList<String>();
+    private ArrayList<ReplicationDescriptor> descriptorList = new ArrayList<>();
+    private List<String> errors = new ArrayList<>();
 
     private void addFixedReplicationDescriptorToList(String name, int replications) {
         Iterator<ReplicationDescriptor> it = descriptorList.iterator();
@@ -87,12 +87,12 @@ public class CountReplicationDescriptor extends BUFRBaseListener {
         String fixReplication = ctx.getText();
         log.finest("Fixed Replication Ctx: " + fixReplication);
         String[] parts = fixReplication.split(" ");
-        // log.finest("" + parts.length + " x:" + parts[1]);
+        
         log.finest("Replications: " + Integer.parseInt(parts[1]));
         numberOfFixedReplications = Integer.parseInt(parts[1]);
         addFixedReplicationDescriptorToList(fixReplication, numberOfFixedReplications);
 	counterDescriptors++;
-        // log.finest("x_all: " + ctx.x_all().toString());
+        
     }
 
     @Override
@@ -111,15 +111,7 @@ public class CountReplicationDescriptor extends BUFRBaseListener {
         this.processDescriptor();
     }
 
-    /*
-     * @Override
-     * 
-     * public void
-     * enterOperator_descriptor_expr(BUFRParser.Operator_descriptor_exprContext ctx)
-     * { log.finest("Operator Descriptor Expr Ctx: " + ctx.getText());
-     * counterDescriptors++; // @ToDo: konnte mehr als einer sein
-     * this.processDescriptor(); }
-     */
+    
     @Override
     public void enterOperator_descriptor(BUFRParser.Operator_descriptorContext ctx) {
         log.finest("Operator Descriptor Ctx: " + ctx.getText());
@@ -153,13 +145,7 @@ public class CountReplicationDescriptor extends BUFRBaseListener {
 
     }
 
-    /*
-     * @Override public void enterData_description_operator_qualifier(BUFRParser.
-     * Data_description_operator_qualifierContext ctx) {
-     * log.finest("Data Description Operator Qualifier Ctx: " + ctx.getText());
-     * counterDescriptors++; this.processDescriptor(); }
-     */
-
+    
     @Override
     public void enterSequence_descriptor(BUFRParser.Sequence_descriptorContext ctx) {
         log.finest("Sequence Descriptor Ctx: " + ctx.getText());
@@ -172,18 +158,7 @@ public class CountReplicationDescriptor extends BUFRBaseListener {
         log.finest("Replication Ctx: " + ctx.getText());
     }
 
-    /*
-    @Override
-    public void enterDelayed_replication_descriptor(BUFRParser.Delayed_replication_descriptorContext ctx) {
-        String delayedReplication = ctx.getText();
-        log.finest("Delayed Replication Ctx: " + delayedReplication);
-        String[] parts = delayedReplication.split(" ");
-        // log.finest("" + parts.length + " x:" + parts[1]);
-        log.finest("Replications: " + Integer.parseInt(parts[1]));
-        numberOfDelayedReplications = Integer.parseInt(parts[1]);
-        addDelayedReplicationDescriptorToList(delayedReplication, numberOfDelayedReplications);
-    }
-*/
+   
     @Override public void enterDelayed_replication_expr_part(BUFRParser.Delayed_replication_expr_partContext ctx) {
         String delayedReplication = ctx.getText();
         log.finest("Delayed Replication Ctx: " + delayedReplication);
@@ -224,15 +199,13 @@ public class CountReplicationDescriptor extends BUFRBaseListener {
         return Collections.unmodifiableList(errors);
     }
 
-    /*
-     * @Override public void visitTerminal(TerminalNode node) {
-     * System.out.println("TN counter: " + counterDescriptors);
-     * System.out.println(node.getText()); }
-     */
+  
 
     class ReplicationDescriptor {
-        private int position, replications;
-        private String type, name;
+        private int position;
+        private int replications;
+        private String type;
+        private String name;
 
         public ReplicationDescriptor(int position, String name, String type, int replications) {
             this.position = position;
