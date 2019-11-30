@@ -16,4 +16,5 @@ tools/
 .gradle
 # Ignore dev specific build file
 build-dev.gradle
-
+.idea/
+bufr-grammar.iml
