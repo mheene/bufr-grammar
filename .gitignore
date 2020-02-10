@@ -1,0 +1,26 @@
+*~
+init.sh
+build.sh
+.antlr/
+archive/
+build/
+bin/
+playground/
+.classpath
+.project
+.settings/
+.vscode/
+target/
+tools/
+# Ignore Gradle project-specific cache directory
+.gradle
+<<<<<<< HEAD
+
+
+sonarcloud.gradle
+=======
+# Ignore dev specific build file
+build-dev.gradle
+.idea/
+bufr-grammar.iml
+>>>>>>> a095cc90c1c778da65a3eb9a4ddfe0cda27ba83b
