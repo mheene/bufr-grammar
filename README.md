@@ -45,7 +45,7 @@ The project uses [gradle](https://gradle.org/) as a build tool. The project come
 Requirements:
 You need a recent java installation (JDK 8 or higher)
 ```
-java -version
+javac -version
 ```
 
 Clone this repository:
