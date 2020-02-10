@@ -68,6 +68,42 @@ task copyTestResources(type: Copy) {
 }
 
 
+task copyGrammar(type: Copy) {
+    from "${projectDir}/src/main/antlr/" , "src/main/python/"
+    into "${buildDir}/python/main"
+}
+
+
+
+task generatePythonCode(type: JavaExec) {
+  group = "BUFR Grammar"
+  description = "ANTLR  task: "
+  description += "gradlew generatePythonCode"
+
+  dependsOn copyGrammar    
+  classpath = sourceSets.main.runtimeClasspath
+  workingDir = "${buildDir}/python/main"
+  main = 'org.antlr.v4.Tool'
+  def preDef = ["-Dlanguage=Python3", "BUFR.g4"]
+  args = preDef 
+ 
+}
+
+task runPythonCode(type:Exec) {
+  dependsOn generatePythonCode
+  
+  doFirst {
+    if (!project.hasProperty('inputFile')) 
+        throw new GradleException("Missing parameter.\n Usage: gradlew grun -PinputFile=material/valid/301003.txt")
+  }
+
+  workingDir = "${buildDir}/python/main"
+  if (project.hasProperty('inputFile')) {
+    def cmdArgs = (inputFile.split(','))
+    commandLine 'python' , 'BUFRStart.py', cmdArgs[0]  
+  }
+
+}
 task grun(type: JavaExec) {
   group = "BUFR Grammar"
   description = "ANTLR grun task: "
@@ -104,6 +140,6 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.1.0'
     testImplementation 'junit:junit:4.12'
     testRuntimeOnly 'org.junit.vintage:junit-vintage-engine:5.1.0'
-    antlr "org.antlr:antlr4:4.7.2" // use ANTLR version 4
+    antlr "org.antlr:antlr4:4.8-1" // use ANTLR version 4
   
 }
