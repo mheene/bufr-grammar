@@ -90,17 +90,21 @@ task generatePythonCode(type: JavaExec) {
 }
 
 task runPythonCode(type:Exec) {
+  group = "BUFR Grammar"
+  description = "ANTLR runPythonCode task: "
+  description += "gradlew runPythoncode -PinputFile=material/valid/301003.txt"
   dependsOn generatePythonCode
   
   doFirst {
     if (!project.hasProperty('inputFile')) 
-        throw new GradleException("Missing parameter.\n Usage: gradlew grun -PinputFile=material/valid/301003.txt")
+        throw new GradleException("Missing parameter.\n Usage: gradlew runPythoncode -PinputFile=material/valid/301003.txt")
   }
 
   workingDir = "${buildDir}/python/main"
   if (project.hasProperty('inputFile')) {
     def cmdArgs = (inputFile.split(','))
-    commandLine 'python' , 'BUFRStart.py', cmdArgs[0]  
+    def inputFile = '../../../' + cmdArgs[0] // crude fix 
+    commandLine 'python' , 'BUFRStart.py', inputFile  
   }
 
 }
