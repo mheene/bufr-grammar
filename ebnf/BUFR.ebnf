@@ -1,0 +1,92 @@
+template ::= expr ( ' ' expr )*
+
+expr     ::= ( replication_descriptor ' ' )* ( element_descriptor | sequence_descriptor | operator_descriptor_expr )
+
+element_descriptor
+         ::= '0' ' ' ( X_PARTS | '36' | '01' ) ' ' ( Y_PARTS | '001' | '002' | '011' | '012' | '021' | '031' | '000' )
+           | data_description_operator_qualifier
+
+operator_descriptor_expr
+         ::= operator_descriptor ( ' ' associated_field_significance )?
+           | operator_236000_expr
+
+operator_descriptor
+         ::= '2' ' ' ( X_PARTS | '31' | '01' ) ' ' ( Y_PARTS | '001' | '002' | '011' | '012' | '021' | '031' | '000' )
+
+operator_236000_expr
+         ::= operator_236000 ' ' ( fixed_replication_descriptor_one_element | delayed_replication_expr_one_element ) ' ' data_present_indicator
+
+operator_236000
+         ::= '2' ' ' '36' ' ' '000'
+
+sequence_descriptor
+         ::= '3' ' ' ( '01' | '31' | '36' | X_PARTS ) ' ' ( Y_PARTS | '001' | '002' | '011' | '012' | '021' | '031' | '000' )
+
+replication_descriptor
+         ::= fixed_replication_descriptor
+           | delayed_replication_expr
+
+fixed_replication_descriptor
+         ::= fixed_replication_descriptor_part
+           | fixed_replication_descriptor_one_element
+
+delayed_replication_expr
+         ::= delayed_replication_expr_part
+           | delayed_replication_expr_one_element
+
+fixed_replication_descriptor_part
+         ::= '1' ' ' ( '31' | '36' | X_PARTS ) ' ' ( Y_PARTS | '001' | '002' | '011' | '012' | '021' | '031' )
+
+fixed_replication_descriptor_one_element
+         ::= '1' ' ' '01' ' ' ( Y_PARTS | '001' | '002' | '011' | '012' | '021' | '031' )
+
+delayed_replication_expr_part
+         ::= delayed_replication_descriptor_part ' ' delayed_descriptor_replication_factor
+
+delayed_replication_expr_one_element
+         ::= delayed_replication_descriptor_one_element ' ' delayed_descriptor_replication_factor
+
+delayed_replication_descriptor
+         ::= delayed_replication_descriptor_part
+           | delayed_replication_descriptor_one_element
+
+delayed_replication_descriptor_part
+         ::= '1' ' ' ( '31' | '36' | X_PARTS ) ' ' '000'
+
+delayed_replication_descriptor_one_element
+         ::= '1' ' ' '01' ' ' '000'
+
+data_description_operator_qualifier
+         ::= delayed_descriptor_replication_factor
+           | associated_field_significance
+           | data_present_indicator
+
+delayed_descriptor_replication_factor
+         ::= '0' ' ' '31' ' ' ( '000' | '001' | '002' | '011' | '012' )
+
+associated_field_significance
+         ::= '0' ' ' '31' ' ' '021'
+
+data_present_indicator
+         ::= '0' ' ' '31' ' ' '031'
+_        ::= WS
+          /* ws: definition */
+
+<?TOKENS?>
+
+Y_PARTS  ::= '0' ( '0' [3-9] | [4-9] [0-9] )
+           | '010'
+           | ( '01' | '02' | '03' ) [2-9]
+           | '020'
+           | '030'
+           | '1' [0-9] [0-9]
+           | '2' ( [0-4] [0-9] | '5' [0-5] )
+
+X_PARTS  ::= '00'
+           | '0' [2-9]
+           | [1-24-5] [0-9]
+           | '30'
+           | '3' [1-57-9]
+           | '6' [0-3]
+
+WS       ::= [#xd#xa#x9]+

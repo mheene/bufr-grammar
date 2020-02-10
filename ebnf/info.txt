@@ -1,0 +1,21 @@
+Online Converter ANTLR4 grammar to EBNF:
+========================================
+https://bottlecaps.de/convert/
+
+Options: "inline single-string nonterminals" on, all others off
+
+target formant "EBNF"
+
+
+Online Verification:
+=====================
+https://mdkrajnak.github.io/ebnftest/
+Github: https://github.com/mdkrajnak/ebnftest
+
+Remarks:
+	- comments removed
+	- WS removed
+	- Intervalls like [1-9] resolved to '1' | '2' | ....
+	- Grammar expects "EOF" for practical reason modify grammar like this
+	  template ::= expr ( ' ' expr )* '.'
+	  and insert '.' add the end of your test string
