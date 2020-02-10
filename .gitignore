@@ -16,3 +16,4 @@ tools/
 .gradle
 
 
+sonarcloud.gradle
