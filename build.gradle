@@ -89,6 +89,17 @@ task generatePythonCode(type: JavaExec) {
  
 }
 
+task pythonDist(type: Tar) {
+  group = "BUFR Grammar"
+  description = "Builds Python distribution: build/dist/ "
+  dependsOn generatePythonCode
+  from "${buildDir}/python/main"
+  archiveBaseName = 'bufr-grammar'
+  destinationDirectory = file("${buildDir}/dist")
+  archiveExtension = 'tgz'
+  compression = Compression.GZIP
+}
+
 task runPythonCode(type:Exec) {
   group = "BUFR Grammar"
   description = "ANTLR runPythonCode task: "
