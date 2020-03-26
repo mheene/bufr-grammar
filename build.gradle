@@ -100,11 +100,36 @@ task pythonDist(type: Tar) {
   compression = Compression.GZIP
 }
 
+task checkPythonModules(type:Exec) {
+  group = "BUFR Grammar"
+  description = "ANTLR checkPythonModules task: "
+  description += "pip3 install --user -r src/main/python/requirements.txt"
+  dependsOn generatePythonCode
+
+  workingDir = "${buildDir}/python/main"
+  ignoreExitValue true
+
+  //errorOutput    new ByteArrayOutputStream()
+
+  try {
+      commandLine 'python' , '-c' , 'from antlr4 import *'
+  } catch (Exception e) {
+    println("ErrorOut: " + e.getMessage())
+  }
+
+  doLast {
+  	 if( (execResult.getExitValue() != 0)) {
+             throw new GradleException("Missing module.\n pip3 install --user -r src/main/python/requirements.txt")
+    	 }
+  }
+  
+}
+
 task runPythonCode(type:Exec) {
   group = "BUFR Grammar"
   description = "ANTLR runPythonCode task: "
   description += "gradlew runPythoncode -PinputFile=material/valid/301003.txt"
-  dependsOn generatePythonCode
+  dependsOn checkPythonModules
   
   doFirst {
     if (!project.hasProperty('inputFile')) 

@@ -39,7 +39,7 @@ A basic version of a BUFR grammar is available on [here](https://github.com/mhee
 Note: You can find the [grammar in BNF<sup>1</sup>-style convention for the Java programming language on Oracle website](https://docs.oracle.com/javase/specs/jls/se7/html/jls-18.html) or in [antlr-style on github](https://github.com/antlr/grammars-v4/tree/master/java) 
 <sup>1</sup> Backus-Naur-Form.
 
-# Usage
+# Usage - java version
 The project uses [gradle](https://gradle.org/) as a build tool. The project comes with a gradle wrapper. In case you consider to create an own gradle wrapper please you a recent gradle version (5.x or higher) installation and keep in mind that JDK 13 requires a gradle version 6.x.
 
 Requirements:
@@ -86,6 +86,36 @@ Verify all WMO sequences (Table D) against the grammar (including additional rep
 ```
 ./gradlew test
 ``` 
+
+# Usage - python version
+The project uses [gradle](https://gradle.org/) as a build tool. The project comes with a gradle wrapper. In case you consider to create an own gradle wrapper please you a recent gradle version (5.x or higher) installation and keep in mind that JDK 13 requires a gradle version 6.x.
+
+Clone repository (see above)
+
+Build the project as a standalone distribution:
+```
+cd bufr-grammar
+./gradlew pythonDist
+```
+This creates the archive build/dist/bufr-grammar.tgz 
+The archive contains the grammar, a lexer and a parser in python.
+
+## Install the python distribution
+Create a directory and unpack the archive (tar xvfz bufr-grammar.tgz) 
+
+Install python dependencies
+```
+pip3 install --user -r requirements.txt
+```
+
+Check a BUFR template against the grammar
+```
+python3 BUFRStart.py <template.txt>
+```
+
+
+
+
 
 # Presentation and poster
 An motivation and introduction including examples to the BUFR grammar is available as a [powerpoint talk](https://view.officeapps.live.com/op/view.aspx?src=https://github.com/mheene/bufr-grammar/raw/master/talk/BUFR-Grammar-Talk.ppt). The poster is available as pdf and a [powerpoint](https://view.officeapps.live.com/op/view.aspx?src=https://github.com/mheene/bufr-grammar/raw/master/poster/IN23D-0901_agu_2019.pptx).
