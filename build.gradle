@@ -69,7 +69,7 @@ task copyTestResources(type: Copy) {
 
 
 task copyGrammar(type: Copy) {
-    from "${projectDir}/src/main/antlr/" , "src/main/python/"
+    from "${projectDir}/src/main/antlr/" , "src/main/python/" , "${projectDir}/README.md", "${projectDir}/material/valid/301003.txt"
     into "${buildDir}/python/main"
 }
 
@@ -98,6 +98,9 @@ task pythonDist(type: Tar) {
   destinationDirectory = file("${buildDir}/dist")
   archiveExtension = 'tgz'
   compression = Compression.GZIP
+  doLast {
+    println("Distribution: build/dist/bufr-grammar.tgz")
+  }
 }
 
 task checkPythonModules(type:Exec) {
@@ -119,8 +122,8 @@ task checkPythonModules(type:Exec) {
 
   doLast {
   	 if( (execResult.getExitValue() != 0)) {
-             throw new GradleException("Missing module.\n pip3 install --user -r src/main/python/requirements.txt")
-    	 }
+      throw new GradleException("Missing module.\n pip3 install --user -r src/main/python/requirements.txt")
+     }
   }
   
 }

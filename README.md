@@ -88,7 +88,7 @@ Verify all WMO sequences (Table D) against the grammar (including additional rep
 ``` 
 
 # Usage - python version
-The project uses [gradle](https://gradle.org/) as a build tool. The project comes with a gradle wrapper. In case you consider to create an own gradle wrapper please you a recent gradle version (5.x or higher) installation and keep in mind that JDK 13 requires a gradle version 6.x.
+The project uses [gradle](https://gradle.org/) as a build tool. The project comes with a gradle wrapper. In case you consider to create an own gradle wrapper please use a recent gradle version (5.x or higher) installation and keep in mind that JDK 13 requires a gradle version 6.x.
 
 Clone repository (see above)
 
@@ -101,7 +101,11 @@ This creates the archive build/dist/bufr-grammar.tgz
 The archive contains the grammar, a lexer and a parser in python.
 
 ## Install the python distribution
-Create a directory and unpack the archive (tar xvfz bufr-grammar.tgz) 
+Create a directory and unpack the archive 
+
+```
+tar xvfz bufr-grammar.tgz) 
+```
 
 Install python dependencies
 ```
