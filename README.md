@@ -104,7 +104,7 @@ The archive contains the grammar, a lexer and a parser in python.
 Create a directory and unpack the archive 
 
 ```
-tar xvfz bufr-grammar.tgz) 
+tar xvfz bufr-grammar.tgz
 ```
 
 Install python dependencies
